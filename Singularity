@@ -42,4 +42,4 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
     cd build
     cmake .. -DCUDA_SDK_ROOT_DIR=/usr/local/cuda-9.2/samples -DCUDA_ROOT_DIR=/usr/local/cuda-9.2 -DCUDA_HELPER_INCLUDE_DIR='/usr/local/cuda-9.2/samples/Common' -DCUDA_CUDA_LIBRARY=/usr/local/cuda-9.2/targets/x86_64-linux/lib/stubs/libcuda.so
     make
-    for i in /opt/fetalReconstruction/bin/linux64/*; do ln -s $i /usr/local/bin; done
+    for i in /opt/fetalReconstruction/bin/linux64/*; do chmod +x $i; ln -s $i /usr/local/bin; done
