@@ -2,12 +2,10 @@ Bootstrap: docker
 From: nvidia/cuda:9.2-devel-ubuntu16.04
 
 %post
-    set -o pipefail     
     apt-get update
     apt-get install -y \
         bzip2 \
         cmake \
-        curl \
         git \
         libbz2-dev \
         libgsl-dev \
@@ -15,12 +13,14 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
         libnifti-dev \
         libtbb-dev \
         libtbb2 \
+        wget \
 	zlib1g-dev \
     rm -rf /var/lib/apt/lists/*
     cd /opt
 
     # Build and install Boost
-    curl -sSL http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz | tar -zx -C /opt
+    wget http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz -P /tmp 
+    tar -C /opt -zxf /tmp/boost_1_58_0.tar.gz
     cd /opt/boost_1_58_0
     ./bootstrap.sh --with-libraries=atomic,date_time,exception,filesystem,iostreams,locale,program_options,regex,signals,system,test,thread,timer,log
     ./b2 --with=all install
