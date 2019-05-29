@@ -1,9 +1,6 @@
 Bootstrap: docker
 From: nvidia/cuda:9.2-devel-ubuntu16.04
 
-%files
-    cmake_use_rpaths.diff /tmp
-
 %post
     apt-get update
     apt-get install -y \
@@ -18,7 +15,6 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
         libtbb2 \
         wget \
 	zlib1g-dev 
-    rm -rf /var/lib/apt/lists/*
     cd /opt
 
     # Build and install Boost
@@ -30,21 +26,37 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
     ldconfig
 
     # Grab CUDA Samples (needed for helper_cuda.h)
-    git clone https://github.com/NVIDIA/cuda-samples.git /usr/local/cuda-9.2/samples && \
-    cd /usr/local/cuda-9.2/samples && \
-    git checkout v9.2
+    git clone --branch v9.2 --depth 1 https://github.com/NVIDIA/cuda-samples.git /usr/local/cuda-9.2/samples && \
 
-    # Build and install fetalReconstruction
-    cd /opt
-    git clone https://github.com/bkainz/fetalReconstruction.git
-    cd fetalReconstruction
-    # NB need to use particular commit > tag r0.1 to get CUDA >=7.5 support
-    git checkout 69c381f68cc5527650e08e926caebbffd73b7a9f
-    cd /opt/fetalReconstruction/source
-    # Patch CMakeLists.txt so use RPATHs for finding boost (otherwise cannot be dynamically found at runtime) 
-    git apply /tmp/cmake_use_rpaths.diff
-    mkdir build
-    cd build
+    # Build fetalReconstruction
+    mkdir /opt/fetalReconstruction
+    cd /opt/fetalReconstruction
+    # Parsimoneous checkout of commit of interest
+    # (need to use particular commit > tag r0.1 to get CUDA >=7.5 support)
+    git init
+    git remote add origin https://github.com/bkainz/fetalReconstruction.git
+    git fetch --depth 1 origin 69c381f68cc5527650e08e926caebbffd73b7a9f
+    git checkout FETCH_HEAD
+
+    mkdir source/build
+    cd source/build
     cmake .. -DCUDA_SDK_ROOT_DIR=/usr/local/cuda-9.2/samples -DCUDA_ROOT_DIR=/usr/local/cuda-9.2 -DCUDA_HELPER_INCLUDE_DIR='/usr/local/cuda-9.2/samples/Common' -DCUDA_CUDA_LIBRARY=/usr/local/cuda-9.2/targets/x86_64-linux/lib/stubs/libcuda.so
     make
+
+    # Ensure built binaries are executable and  on the PATH
     for i in /opt/fetalReconstruction/bin/linux64/*; do chmod +x $i; ln -s $i /usr/local/bin; done
+
+    # Cleanup to reduce image size
+    apt-get purge -y \
+        cmake \
+        git \
+        libbz2-dev \
+        libgsl-dev \
+        libnifti-dev \
+        libtbb-dev \
+        wget \
+	zlib1g-dev 
+    apt-get --purge -y autoremove
+    rm -rf /var/lib/apt/lists/*
+    rm -r /opt/boost_1_58_0
+    rm -rf /opt/fetalReconstruction/source
