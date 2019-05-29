@@ -1,6 +1,9 @@
 Bootstrap: docker
 From: nvidia/cuda:9.2-devel-ubuntu16.04
 
+%files
+    cmake_use_rpaths.diff /tmp
+
 %post
     apt-get update
     apt-get install -y \
@@ -32,12 +35,14 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
     git checkout v9.2
 
     # Build and install fetalReconstruction
-    # NB need to use particular commit > tag r0.1 to get CUDA >=7.5 support
     cd /opt
     git clone https://github.com/bkainz/fetalReconstruction.git
     cd fetalReconstruction
+    # NB need to use particular commit > tag r0.1 to get CUDA >=7.5 support
     git checkout 69c381f68cc5527650e08e926caebbffd73b7a9f
     cd /opt/fetalReconstruction/source
+    # Patch CMakeLists.txt so use RPATHs for finding boost (otherwise cannot be dynamically found at runtime) 
+    git apply cmake_use_rpaths.diff
     mkdir build
     cd build
     cmake .. -DCUDA_SDK_ROOT_DIR=/usr/local/cuda-9.2/samples -DCUDA_ROOT_DIR=/usr/local/cuda-9.2 -DCUDA_HELPER_INCLUDE_DIR='/usr/local/cuda-9.2/samples/Common' -DCUDA_CUDA_LIBRARY=/usr/local/cuda-9.2/targets/x86_64-linux/lib/stubs/libcuda.so

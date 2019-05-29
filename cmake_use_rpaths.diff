@@ -1,0 +1,31 @@
+diff --git a/source/CMakeLists.txt b/source/CMakeLists.txt
+index 3d8a5dd..cf8966b 100755
+--- a/source/CMakeLists.txt
++++ b/source/CMakeLists.txt
+@@ -15,6 +15,26 @@ option(USE_SYSTEM_IRTK "use system IRTK version instead of simplified included v
+ option(BUILD_WITH_CULA "build with CULA support, necessary for automatic motion measurement" OFF)
+ option(BUILD_WITH_SIMULATION "build with a simple scan simultion, use Matlab for more elaborated version." OFF)
+ 
++# use, i.e. don't skip the full RPATH for the build tree
++SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
++
++# when building, don't use the install RPATH already
++# (but later on when installing)
++SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
++
++SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
++
++# add the automatically determined parts of the RPATH
++# which point to directories outside the build tree to the install RPATH
++SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
++
++
++# the RPATH to be used when installing, but only if it's not a system directory
++LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
++IF("${isSystemDir}" STREQUAL "-1")
++   SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
++ENDIF("${isSystemDir}" STREQUAL "-1")
++
+ # Finding GNU scientific library GSL
+ FIND_PACKAGE(GSL REQUIRED)
+ set(GSL_LIBRARIES ${GSL_LIBRARIES} ${GSL_LIB})
