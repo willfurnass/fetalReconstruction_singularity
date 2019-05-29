@@ -18,7 +18,7 @@ singularity pull --name fetalReconstruction.sif shub://willfurnass/fetalReconstr
 You are then able to run commands that live 'within' a fetalSingularity 'container' e.g.
 
 ```sh
-singularity exec "${SINGULARITY_CACHEDIR}/fetalReconstruction.sif" /usr/local/bin/PVRreconstructionGPU
+singularity exec --nv "${SINGULARITY_CACHEDIR}/fetalReconstruction.sif" /usr/local/bin/PVRreconstructionGPU
 ```
 
 ## Updates
