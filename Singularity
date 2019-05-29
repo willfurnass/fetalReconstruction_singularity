@@ -1,6 +1,10 @@
 Bootstrap: docker
 From: nvidia/cuda:9.2-devel-ubuntu16.04
 
+%labels
+
+   AUTHOR w.furnass@sheffield.ac.uk
+
 %post
     apt-get update
     apt-get install -y \
@@ -60,3 +64,6 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
     rm -rf /var/lib/apt/lists/*
     rm -r /opt/boost_1_58_0
     rm -rf /opt/fetalReconstruction/source
+
+%runscript
+    /usr/local/bin/PVRreconstructionGPU  
