@@ -27,6 +27,7 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
     cd /opt/boost_1_58_0
     ./bootstrap.sh --with-libraries=atomic,date_time,exception,filesystem,iostreams,locale,program_options,regex,signals,system,test,thread,timer,log
     ./b2 --with=all install
+    ldconfig
 
     # Grab CUDA Samples (needed for helper_cuda.h)
     git clone https://github.com/NVIDIA/cuda-samples.git /usr/local/cuda-9.2/samples && \
