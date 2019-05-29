@@ -19,8 +19,8 @@ singularity pull --name fetalReconstruction.sif shub://willfurnass/fetalReconstr
 You are then able to run commands that live 'within' a fetalSingularity 'container' e.g.
 
 ```bash
-singularity exec --nv "${SINGULARITY_CACHEDIR}/fetalReconstruction.sif" /usr/local/bin/PVRreconstructionGPU  # or
-singularity exec --nv "${SINGULARITY_CACHEDIR}/fetalReconstruction.sif" /usr/local/bin/SVRreconstructionGPU 
+singularity exec --nv "${SINGULARITY_CACHEDIR}/fetalReconstruction.sif" PVRreconstructionGPU  # or
+singularity exec --nv "${SINGULARITY_CACHEDIR}/fetalReconstruction.sif" SVRreconstructionGPU 
 ```
 
 ## Example of a Grid Engine job using test data
@@ -42,7 +42,7 @@ singularity pull --name fetalReconstruction.sif shub://willfurnass/fetalReconstr
 export DATADIR=/opt/fetalReconstruction/data 
 
 # Run fetalReconstruction test
-singularity exec --nv "${SINGULARITY_CACHEDIR}/fetalReconstruction.sif" /opt/fetalReconstruction/bin/linux64/SVRreconstructionGPU \
+singularity exec --nv "${SINGULARITY_CACHEDIR}/fetalReconstruction.sif" SVRreconstructionGPU \
     -o 3TReconstruction.nii.gz \
     -i $DATADIR/14_3T_nody_001.nii.gz \
        $DATADIR/10_3T_nody_001.nii.gz \
