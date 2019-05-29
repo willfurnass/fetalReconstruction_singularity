@@ -34,13 +34,11 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
 
     # Build fetalReconstruction
     mkdir /opt/fetalReconstruction
-    cd /opt/fetalReconstruction
-    # Parsimoneous checkout of commit of interest
-    # (need to use particular commit > tag r0.1 to get CUDA >=7.5 support)
-    git init
-    git remote add origin https://github.com/bkainz/fetalReconstruction.git
-    git fetch --depth 1 origin 69c381f68cc5527650e08e926caebbffd73b7a9f
-    git checkout FETCH_HEAD
+    cd /opt/
+    git clone https://github.com/bkainz/fetalReconstruction.git
+    cd fetalReconstruction
+    # NB need to use particular commit > tag r0.1 to get CUDA >=7.5 support
+    git checkout 69c381f68cc5527650e08e926caebbffd73b7a9f
 
     mkdir source/build
     cd source/build
@@ -64,6 +62,7 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
     rm -rf /var/lib/apt/lists/*
     rm -r /opt/boost_1_58_0
     rm -rf /opt/fetalReconstruction/source
+    rm -rf /opt/fetalReconstruction/.git
 
 %runscript
     /usr/local/bin/PVRreconstructionGPU  
