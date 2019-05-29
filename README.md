@@ -2,6 +2,8 @@
 
 Making it easier to start using [https://github.com/bkainz/fetalReconstruction/](https://github.com/bkainz/fetalReconstruction/) on e.g. HPC.
 
+## Usage
+
 <!-- TODO: update https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg -->
 
 The quickest way to start using fetalReconstruction via this Singularity image 
@@ -19,5 +21,11 @@ You are then able to run commands that live 'within' a fetalSingularity 'contain
 singularity exec "${SINGULARITY_CACHEDIR}/fetalReconstruction.sif" /usr/local/bin/PVRreconstructionGPU
 ```
 
+## Updates
+
 A note re SingularityHub: the fetalReconstruction image provided via SingularityHub is rebuilt whenever there is a push to this GitHub repository.
+
+## License
+
+MIT license; see the [fetalReconstruction license](https://github.com/bkainz/fetalReconstruction/#license).
 
