@@ -28,7 +28,6 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
     ./bootstrap.sh --with-libraries=atomic,date_time,exception,filesystem,iostreams,locale,program_options,regex,signals,system,test,thread,timer,log
     ./b2 --with=all install
 
-
     # Grab CUDA Samples (needed for helper_cuda.h)
     git clone https://github.com/NVIDIA/cuda-samples.git /usr/local/cuda-9.2/samples && \
     cd /usr/local/cuda-9.2/samples && \
@@ -42,7 +41,7 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
     git checkout 69c381f68cc5527650e08e926caebbffd73b7a9f
     cd /opt/fetalReconstruction/source
     # Patch CMakeLists.txt so use RPATHs for finding boost (otherwise cannot be dynamically found at runtime) 
-    git apply cmake_use_rpaths.diff
+    git apply /tmp/cmake_use_rpaths.diff
     mkdir build
     cd build
     cmake .. -DCUDA_SDK_ROOT_DIR=/usr/local/cuda-9.2/samples -DCUDA_ROOT_DIR=/usr/local/cuda-9.2 -DCUDA_HELPER_INCLUDE_DIR='/usr/local/cuda-9.2/samples/Common' -DCUDA_CUDA_LIBRARY=/usr/local/cuda-9.2/targets/x86_64-linux/lib/stubs/libcuda.so
