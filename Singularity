@@ -14,7 +14,7 @@ From: nvidia/cuda:9.2-devel-ubuntu16.04
         libtbb-dev \
         libtbb2 \
         wget \
-	zlib1g-dev \
+	zlib1g-dev 
     rm -rf /var/lib/apt/lists/*
     cd /opt
 
